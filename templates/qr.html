@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu código QR</title>
+</head>
+<body>
+    <h1>Bienvenido, {{ guest[1] }}</h1>
+    <p>Mesa: {{ guest[2] }}</p>
+    <p>Acompañantes: {{ guest[3] }}</p>
+    <h2>Tu código QR:</h2>
+    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    <p>Por favor, muestra este código QR al llegar a la boda.</p>
+    <a href="/">Volver al inicio</a>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Invitados</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <a href="/scan">Scan</a>
+    <h1>Lista de Invitados</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Mesa</th>
+            <th>Presente</th>
+            <th>Código QR</th>
+            <th>Acción</th>
+        </tr>
+        {% for guest in guests %}
+        <tr>
+            <td>{{ guest[0] }}</td>
+            <td>{{ guest[1] }}</td>
+            <td>{{ guest[2] }}</td>
+            <td>{{ "Sí" if guest[3] else "No" }}</td>
+            <td>
+                {% if guest[4] %}
+                    <img src="data:image/png;base64,{{ guest[4] }}" alt="QR Code">
+                {% else %}
+                    Error generando QR
+                {% endif %}
+            </td>
+            <td>
+                <button onclick="markPresent({{ guest[0] }})" {% if guest[3] %}disabled{% endif %}>
+                    Marcar Presente
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+    function markPresent(guestId) {
+        fetch(`/mark_present/${guestId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Invitado marcado como presente');
+                    location.reload();
+                } else {
+                    alert('Error al marcar al invitado como presente');
+                }
+            });
+    }
+    </script>
+</body>
+</html>
